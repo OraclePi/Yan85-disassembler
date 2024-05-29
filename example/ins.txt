@@ -1,0 +1,8 @@
+IMM b 0x3a
+STM b a
+ADD b c
+LDM b b
+CMP a b
+JMP N d
+STK NONE a
+SYS 0x1 a

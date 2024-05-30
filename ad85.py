@@ -148,7 +148,10 @@ def vm_asm(instruction):
                 info(f"{op} {arg1} {arg2}")
                 for k1, v1 in vm_reg.items():
                     if arg1 == k1:
-                        return (bytes([v]) + bytes([v1]) + bytes.fromhex(arg2.replace("0x", "")))
+                        hex_str = arg2.replace("0x", "")
+                        if len(hex_str) % 2 != 0:
+                            hex_str = "0" + hex_str
+                        return (bytes([v]) + bytes([v1]) + bytes.fromhex(hex_str))
             elif k == "ADD":
                 info(f"{op} {arg1} {arg2}")
                 for k1, v1 in vm_reg.items():
@@ -223,8 +226,7 @@ def asm_output(insts):
     payload = b""
     insts = insts.split("\n")
     for inst in insts:
-        op, arg1, arg2 = vm_asm(inst)
-        payload += bytes([op, arg1, arg2])
+        payload += bytes(vm_asm(inst))
 
     return payload
 
